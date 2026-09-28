@@ -9,9 +9,9 @@ import cors from "cors";
 
 let app = express();
 
-app.listen(8000, () => {
+app.listen(8000,  () => {
   console.log("application runing at port 8000");
-  connectToDb();
+   connectToDb();
 });
 
 app.use(cors())

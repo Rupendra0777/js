@@ -7,17 +7,17 @@ let productSchema = Schema({
     },
     price:{
         type:Number,
-        required:[true,'name is required']
+        required:[true,'price is required']
 
     },
     quantity:{
         type:Number,
-        required:[true,'name is required']
+        required:[true,'quantity is required']
 
     },
     description:{
         type:String,
-        required:[true,'name is required']
+        required:[true,'description is required']
 
     }
 });

@@ -7,12 +7,12 @@ productRoutes
   .route("/")
   .post(async (req, res, next) => {
     try {
-      let product = new Product(req.body);
-      let savedProduct = await product.save();
+      let result = await Product.create(req.body);
+      // let savedProduct = await product.save();
       res.status(201).json({
         success: true,
         message: "product created successfully",
-        data: savedProduct,
+        data: result,
       });
     } catch (error) {
       res.status(400).json({
@@ -21,35 +21,60 @@ productRoutes
       });
     }
   })
-  .get((req, res, next) => {
-    res.json({
+  .get(async(req, res, next) => {
+    try {
+      let result = await Product.find();
+      res.status(200).json({
       success: true,
       message: "user created successfully",
+      data:result
     });
+      
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message:error.message
+      }) 
+    }
   });
 
 productRoutes
-  .route("/:id")
-  .post((req, res, next) => {
-    res.json({
-      success: true,
-      message: "user created successfully",
-    });
-  })
+  .route("/:id") //localhost:8000/product/id
   .get((req, res, next) => {
-    res.json({
-      success: true,
-      message: "user created successfully",
+    try {
+        let result = Product.findById(req.params.id)
+        res.status(200).json({
+        success: true,
+        message: "user created successfully",
+        data:result
     });
+    } catch (error) {
+      res.status(400).json({
+        success:false,
+        message: error.message
+      })
+    }
   })
-  .put((req, res, next) => {
-    res.json({
+  .patch(async(req, res, next) => {
+    try {
+      let result = await Product.findByIdAndUpdate(req.params.id, req.body, {new:true})
+      res.status(400).json({
       success: true,
       message: "user created successfully",
+      data:result
     });
+      
+    } catch (error) {
+      res.status(400).json({
+        success:false,
+        message:error.message
+      })
+      
+    }
+
   })
   .delete((req, res, next) => {
-    res.json({
+    res.status(400).json({
       success: true,
       message: "user created successfully",
     });
