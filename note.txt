@@ -15,3 +15,21 @@ to make api
 
 localhost:8000/a/b?price=1000&color=red
 route                        query
+A PUT client is saying: "here is the complete new version of this product" — so it takes whatever it currently has, changes the one field, and sends the whole thing back.
+// current product
+{ name: "Shirt", price: 500, quantity: 10, description: "Cotton" }
+
+// client wants price 600. It must send all four fields:
+PUT /api/products/abc123
+{ name: "Shirt", price: 600, quantity: 10, description: "Cotton" }
+// → same result, nothing lost
+Because the client echoes back everything, overwrite: true is safe — every field you don't want to change was already sent.
+The danger is a client that only sends the field it wants changed:
+PUT /api/products/abc123
+{ price: 600 }        // ← with overwrite: true
+// → { price: 600 }  name, quantity, description all destroyed
+So the rule to remember:
+- PUT → client sends everything → { overwrite: true } is correct
+- PATCH → client sends only changes → leave overwrite off
+And if you can't guarantee your clients will send the full object, use PATCH. That's the safer default for most CRUD apps, which is why a lot of tutorials call the handler .put() but leave overwrite off — technically that's a PATCH hiding inside a PUT route.
+
